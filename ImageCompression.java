@@ -36,13 +36,12 @@ public class ImageCompression {
 		}
 		savedImage = image;
 		arrayToImage ati = new arrayToImage();
-		ati.arrtoimage(image);
-		PrintArray(4, 4);
+		ati.arrtoimage(image, "before compression.jpg");
+		PrintArray(16, 16);
 		//CompressRows(4, 4);
 		CompressRows(16, 16);
 		CompressCol(16, 16);
-		System.out.println("compress 8x8");
-		PrintArray(4, 4);
+		ati.arrtoimage(image, "compressed.jpg");
 		//CompressRows(4, 4);
 		//CompressCol(4, 4);
 		//System.out.println("compress 4x4");
@@ -59,11 +58,9 @@ public class ImageCompression {
 		//UncompressRow(4, 4);
 		//System.out.println("uncompress 4x4");
 		//PrintArray(8, 8);
-		UncompressCol(4,4);
-		UncompressRow(4, 4);
-		//UncompressRow(4, 4);
-		System.out.println("uncompress 8x8");
-		PrintArray(4, 4);
+		UncompressCol(16,16);
+		UncompressRow(16,16);
+		ati.arrtoimage(image, "uncompressed.jpg");
 	}
 	
 
