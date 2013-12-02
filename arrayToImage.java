@@ -14,6 +14,7 @@ public class arrayToImage {
         File file = new File(fileName);
         ImageIO.write(image, "jpg", file);
 	}
+
 	public static BufferedImage convertRGBImage(int[][] rgbValue) {
 		int height = rgbValue.length;
 		int width = rgbValue[0].length;

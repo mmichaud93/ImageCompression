@@ -5,18 +5,8 @@ public class ImageCompression {
 
 	int[][] image;
 	int[][] savedImage;
-	int width = 16;
-	int height =16;
-	float[][] compMat1 = {
-		{0.5f, 0, 0, 0,  0.5f, 0, 0, 0},
-		{0.5f, 0, 0, 0, -0.5f, 0, 0, 0},
-		{0, 0.5f, 0, 0, 0, 0.5f, 0, 0},
-		{0, 0.5f, 0, 0, 0, -0.5f, 0, 0},
-		{0, 0, 0.5f, 0, 0, 0, 0.5f, 0},
-		{0, 0, 0.5f, 0, 0, 0, -0.5f, 0},
-		{0, 0, 0, 0.5f, 0, 0, 0, 0.5f},
-		{0, 0, 0, 0.5f, 0, 0, 0, -0.5f}
-	};
+	int width = 512;
+	int height =512;
 	
 	public static void main(String[] args) {
 		new ImageCompression();
@@ -31,36 +21,30 @@ public class ImageCompression {
 		// randomly fill array
 		for(int i = 0; i < height; i++) {
 			for(int r = 0; r < width; r++) {
-				image[i][r] = random.nextInt(256);
+				image[i][r] = random.nextInt(512)+0;
 			}
 		}
 		savedImage = image;
 		arrayToImage ati = new arrayToImage();
 		ati.arrtoimage(image, "before compression.jpg");
-		PrintArray(16, 16);
-		//CompressRows(4, 4);
-		CompressRows(16, 16);
-		CompressCol(16, 16);
-		ati.arrtoimage(image, "compressed.jpg");
-		//CompressRows(4, 4);
-		//CompressCol(4, 4);
-		//System.out.println("compress 4x4");
-		//PrintArray(8, 8);
-		//CompressRows(2, 2);
-		//CompressCol(2, 2);
-		//System.out.println("compress 2x2");
-		//PrintArray(8, 8);
-		//UncompressCol(2, 2);
-		//UncompressRow(2, 2);
-		//System.out.println("uncompress 2x2");
-		//PrintArray(8, 8);
-		//UncompressCol(4, 4);
-		//UncompressRow(4, 4);
-		//System.out.println("uncompress 4x4");
-		//PrintArray(8, 8);
-		UncompressCol(16,16);
-		UncompressRow(16,16);
-		ati.arrtoimage(image, "uncompressed.jpg");
+		CompressRows(width,height);
+		CompressCol(width,height);
+		ati.arrtoimage(image, "compressed 64.jpg");
+		CompressRows(width/2,height/2);
+		CompressCol(width/2,height/2);
+		ati.arrtoimage(image, "compressed 32.jpg");
+		CompressRows(width/4,height/4);
+		CompressCol(width/4,height/4);
+		ati.arrtoimage(image, "compressed 16.jpg");
+		UncompressCol(width/4,height/4);
+		UncompressRow(width/4,height/4);
+		ati.arrtoimage(image, "uncompressed 16.jpg");
+		UncompressCol(width/2,height/2);
+		UncompressRow(width/2,height/2);
+		ati.arrtoimage(image, "uncompressed 32.jpg");
+		UncompressCol(width,height);
+		UncompressRow(width,height);
+		ati.arrtoimage(image, "uncompressed 64.jpg");
 	}
 	
 
@@ -104,6 +88,10 @@ public class ImageCompression {
 				new_image[i][cwidth/2+r/2] = difference;
 			}
 		}
+		if(cwidth == width && cheight == height) {
+			image = new_image;
+			return;
+		}
 		for(int i = 0; i < height; i++) {
 			if (i < new_image.length) {
 				for(int r = 0; r < width; r++) {
@@ -123,7 +111,12 @@ public class ImageCompression {
 				int difference = image[i][r]-detail;
 				new_image[i/2][r] = detail;
 				new_image[cheight/2+i/2][r] = difference;
+				//System.out.println("("+i+","+r+") r = "+image[i][r]+", r + 1 ="+image[i+1][r]+", detail = "+detail+", difference = " +difference );
 			}
+		}
+		if(cwidth == width && cheight == height) {
+			image = new_image;
+			return;
 		}
 		for(int i = 0; i < height; i++) {
 			if (i < new_image.length) {
@@ -146,7 +139,16 @@ public class ImageCompression {
 				int difference = image[cheight/2+i/2][r];
 				new_image[i][r] = detail+difference;
 				new_image[i+1][r] = detail*2-(detail+difference);
+				if(new_image[i][r] < 0)
+					new_image[i][r] = 0;
+				if(new_image[i+1][r] < 0)
+					new_image[i+1][r] = 0;
+				//System.out.println("("+i+","+r+") r = "+new_image[i][r]+", r + 1 ="+new_image[i+1][r]+", detail = "+detail+", difference = " +difference );
 			}
+		}
+		if(cwidth == width && cheight == height) {
+			image = new_image;
+			return;
 		}
 		for(int i = 0; i < height; i++) {
 			if (i < new_image.length) {
@@ -167,7 +169,17 @@ public class ImageCompression {
 				int difference = image[i][cwidth/2+r/2];//image[i][r]-detail;
 				new_image[i][r] = detail+difference;
 				new_image[i][r+1] = detail*2-(detail+difference);
+				if(new_image[i][r] < 0)
+					new_image[i][r] = 0;
+				if(new_image[i][r+1] < 0)
+					new_image[i][r+1] = 0;
+				//System.out.println("r = "+new_image[i][r]+", r + 1 ="+new_image[i][r+1]+", detail = "+detail+", difference = " +difference );
+				
 			}
+		}
+		if(cwidth == width && cheight == height) {
+			image = new_image;
+			return;
 		}
 		for(int i = 0; i < height; i++) {
 			if (i < new_image.length) {
