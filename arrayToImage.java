@@ -8,6 +8,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 
 
+
 public class arrayToImage {
 	public static void exportImageToFile(String fileName,RenderedImage image) throws IOException{
         File file = new File(fileName);
@@ -27,28 +28,37 @@ public class arrayToImage {
 	}
 	public static BufferedImage convertRGBImageWithHeader(int[][] rgbValue, String header) {
 		int headerHeight = 13;
-		int height = rgbValue.length+headerHeight;
+		int height = rgbValue.length;
 		int width = rgbValue[0].length;
 		
 		 BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-	        for(int y=headerHeight; y< height; y++){
+	        for(int y=0; y< height; y++){
 	            for(int x=0; x< width; x++){
-	                bufferedImage.setRGB(x,y,rgbValue[y-headerHeight][x]);  
+	                bufferedImage.setRGB(x,y,rgbValue[y][x]);  
 	            }
 	        }
-	        //Draw the text (header)
-	        Graphics2D graphic=bufferedImage.createGraphics();
+	        /*/Draw the text (header)
+	        /Graphics2D graphic=bufferedImage.createGraphics();
 	        graphic.setFont(new Font("Monospaced", Font.BOLD, 14) );
 	        graphic.setColor(Color.white);
-	        graphic.drawString(header,0,10);
+	        graphic.drawString(header,0,10);*/
 
 	        return bufferedImage;  
 	    }
-public static void main(String[] args) {
+	public static void arrtoimage(int[][] image) {
+		BufferedImage image1 = arrayToImage.convertRGBImageWithHeader(image, "This is a test");
+		try {
+			arrayToImage.exportImageToFile("test.jpg",image1);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	/*public static void main(String[] args) {
 	//test implementation (generate arrays)
 	
-	int width=255;
-	int height=255;
+	int width=4;
+	int height=4;
 	int pixel[][];
 	pixel=new int[height][width];
 	
@@ -63,15 +73,7 @@ public static void main(String[] args) {
 		}
 		int color = (255 << 24) | (red << 16) | (green << 8) | blue;
 		pixel[y][x] = color;
+		*/
 		//End test code
-		BufferedImage image = arrayToImage.convertRGBImageWithHeader(pixel, "This is a test");
-		try {
-			arrayToImage.exportImageToFile("test.jpg",image);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-	}
-	}
+		
 	}

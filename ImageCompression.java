@@ -5,8 +5,8 @@ public class ImageCompression {
 
 	int[][] image;
 	int[][] savedImage;
-	int width = 4;
-	int height =4;
+	int width = 16;
+	int height =16;
 	float[][] compMat1 = {
 		{0.5f, 0, 0, 0,  0.5f, 0, 0, 0},
 		{0.5f, 0, 0, 0, -0.5f, 0, 0, 0},
@@ -31,14 +31,16 @@ public class ImageCompression {
 		// randomly fill array
 		for(int i = 0; i < height; i++) {
 			for(int r = 0; r < width; r++) {
-				image[i][r] = random.nextInt(16)+64;
+				image[i][r] = random.nextInt(256);
 			}
 		}
 		savedImage = image;
+		arrayToImage ati = new arrayToImage();
+		ati.arrtoimage(image);
 		PrintArray(4, 4);
 		//CompressRows(4, 4);
-		CompressRows(4, 4);
-		CompressCol(4, 4);
+		CompressRows(16, 16);
+		CompressCol(16, 16);
 		System.out.println("compress 8x8");
 		PrintArray(4, 4);
 		//CompressRows(4, 4);
