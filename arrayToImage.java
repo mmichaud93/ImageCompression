@@ -18,11 +18,22 @@ public class arrayToImage {
 	public static BufferedImage convertRGBImage(int[][] rgbValue) {
 		int height = rgbValue.length;
 		int width = rgbValue[0].length;
-		
+		int r;
+		int g;
+		int b;
+		int col;
 		 BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 	        for(int y=0; y< height; y++){
 	            for(int x=0; x< width; x++){
-	                bufferedImage.setRGB(x,y,rgbValue[y][x]);  
+	            	int val = rgbValue[y][x];
+	            	if(val < 0)
+	            		val = 0;
+	            	r = val;
+	            	g = val;
+	            	b = val;
+	            	col = (r << 16 ) | ( g << 8) | b;
+	            	
+	                bufferedImage.setRGB(x,y,col);  
 	            }
 	        }
 
